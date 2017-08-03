@@ -7,7 +7,7 @@ SIZE_Y=500
 turtle.setup(SIZE_X, SIZE_Y)
 turtle.penup()
 SQUARE_SIZE=20
-START_LENGTH=10
+START_LENGTH=2
 pos_list=[]
 stamp_list=[]
 food_pos=[]
@@ -25,6 +25,9 @@ for s in range(START_LENGTH):
     pos_list.append(my_pos)
     ID=snake.stamp()
     stamp_list.append(ID)
+
+    stamp_me=snake.stamp()
+    stamp_list.append(stamp_me)
 
 UP_ARROW="Up"
 LEFT_ARROW="Left"
@@ -99,6 +102,8 @@ def move_snake():
         food_stamps.pop(food_ind)
         print("You have eaten the food!")
         make_food()
+        
+        stamp_list.append(stamp_me)
     
     old_stamp=stamp_list.pop(0)
     snake.clearstamp(old_stamp)
@@ -111,7 +116,7 @@ def move_snake():
         print("You hit the right edge! Game over!")
         quit()
     elif new_x_pos <= LEFT_EDGE:
-        print("You hit the right edge! Game over!")
+        print("You hit the left edge! Game over!")
         quit()
     elif new_y_pos >= UP_EDGE:
         print("You hit the up edge! Game over!")
@@ -119,8 +124,15 @@ def move_snake():
     elif new_y_pos <= DOWN_EDGE:
         print("You hit the down edge! Game over!")
         quit()
+        
+    #############################################
+    if snake.pos() in pos_list[:-1]:
+        quit()
+    #############################################   
 
     turtle.ontimer(move_snake, TIME_STEP)
+
+    
     
 move_snake()
 
@@ -132,8 +144,8 @@ food_stamps=[]
 
 for this_food_pos in food_pos:
     food.goto(this_food_pos[0],this_food_pos[1])
-    stamp1=food.stamp()
-    food_stamps.append(stamp1)
+    b=food.stamp()
+    food_stamps.append(b)
     turtle.hideturtle()
 
 def make_food():
@@ -149,6 +161,7 @@ def make_food():
     food_pos.append((food_x,food_y))
     a=food.stamp()
     food_stamps.append(a)
+
     
     
     
