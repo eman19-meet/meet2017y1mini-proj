@@ -1,13 +1,13 @@
 import turtle
 import random
-
+color=0
 turtle.tracer(1,0)
 SIZE_X=800
 SIZE_Y=500
 turtle.setup(SIZE_X, SIZE_Y)
 turtle.penup()
 SQUARE_SIZE=20
-START_LENGTH=2
+START_LENGTH=5
 pos_list=[]
 stamp_list=[]
 food_pos=[]
@@ -15,6 +15,16 @@ food_stamps=[]
 snake=turtle.clone()
 snake.shape("square")
 turtle.hideturtle()
+snake.color("blue")
+box=turtle.clone()
+box.penup()
+box.goto(0,250)
+box.pendown()
+box.goto(400,250)
+box.goto(-400,250)
+box.goto(-400,-250)
+box.goto(400,-250)
+box.goto(400,250)
 
 for s in range(START_LENGTH):
     x_pos=snake.pos()[0]
@@ -25,9 +35,6 @@ for s in range(START_LENGTH):
     pos_list.append(my_pos)
     ID=snake.stamp()
     stamp_list.append(ID)
-
-    stamp_me=snake.stamp()
-    stamp_list.append(stamp_me)
 
 UP_ARROW="Up"
 LEFT_ARROW="Left"
@@ -103,11 +110,11 @@ def move_snake():
         print("You have eaten the food!")
         make_food()
         
-        stamp_list.append(stamp_me)
+    else:
+        old_stamp=stamp_list.pop(0)
+        snake.clearstamp(old_stamp)
+        pos_list.pop(0)
     
-    old_stamp=stamp_list.pop(0)
-    snake.clearstamp(old_stamp)
-    pos_list.pop(0)
     new_pos=snake.pos()
     new_x_pos=new_pos[0]
     new_y_pos=new_pos[1]
@@ -125,20 +132,17 @@ def move_snake():
         print("You hit the down edge! Game over!")
         quit()
         
-    #############################################
     if snake.pos() in pos_list[:-1]:
         quit()
-    #############################################   
-
+     
     turtle.ontimer(move_snake, TIME_STEP)
-
-    
     
 move_snake()
 
-turtle.register_shape("trash.gif")
+turtle.shape("circle")
 food = turtle.clone()
-food.shape("trash.gif")
+food.shape("circle")
+food.color("orange")
 food_pos=[(100,100) , (-100,100) , (-100,-100) , (100,-100)]
 food_stamps=[]
 
@@ -161,7 +165,3 @@ def make_food():
     food_pos.append((food_x,food_y))
     a=food.stamp()
     food_stamps.append(a)
-
-    
-    
-    
